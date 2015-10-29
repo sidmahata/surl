@@ -1,0 +1,30 @@
+url:
+    path:     /
+    defaults: { _controller: "SurlUrlBundle:Url:index" }
+
+url_show:
+    path:     /{id}/show
+    defaults: { _controller: "SurlUrlBundle:Url:show" }
+
+url_new:
+    path:     /new
+    defaults: { _controller: "SurlUrlBundle:Url:new" }
+
+url_create:
+    path:     /create
+    defaults: { _controller: "SurlUrlBundle:Url:create" }
+    methods:  POST
+
+url_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "SurlUrlBundle:Url:edit" }
+
+url_update:
+    path:     /{id}/update
+    defaults: { _controller: "SurlUrlBundle:Url:update" }
+    methods:  [POST, PUT]
+
+url_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "SurlUrlBundle:Url:delete" }
+    methods:  [POST, DELETE]

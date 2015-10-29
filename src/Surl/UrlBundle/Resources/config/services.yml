@@ -1,0 +1,4 @@
+services:
+#    surl_url.example:
+#        class: Surl\UrlBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
