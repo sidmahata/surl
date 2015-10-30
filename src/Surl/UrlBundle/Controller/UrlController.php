@@ -30,11 +30,17 @@ class UrlController extends Controller
 //
 //        get the session username
         $username = $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            //        find all records according to session username
+            $entities = $em->getRepository('SurlUrlBundle:Url')->findByAuthor(
+                $username -> getUsername()
+            );
+        }else{
+            $entities = 'no data yet';
+        }
 //
-//        find all records according to session username
-        $entities = $em->getRepository('SurlUrlBundle:Url')->findByAuthor(
-            $username -> getUsername()
-        );
+
 
 //        $repository = $this->getDoctrine()
 //            ->getRepository('SurlUrlBundle:Url');
@@ -71,19 +77,23 @@ class UrlController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            // creating the ACL
-            $aclProvider = $this->get('security.acl.provider');
-            $objectIdentity = ObjectIdentity::fromDomainObject($entity);
-            $acl = $aclProvider->createAcl($objectIdentity);
+            if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+                // creating the ACL
+                $aclProvider = $this->get('security.acl.provider');
+                $objectIdentity = ObjectIdentity::fromDomainObject($entity);
+                $acl = $aclProvider->createAcl($objectIdentity);
 
-            // retrieving the security identity of the currently logged-in user
-            $tokenStorage = $this->get('security.token_storage');
-            $user = $tokenStorage->getToken()->getUser();
-            $securityIdentity = UserSecurityIdentity::fromAccount($user);
+                // retrieving the security identity of the currently logged-in user
+                $tokenStorage = $this->get('security.token_storage');
+                $user = $tokenStorage->getToken()->getUser();
+                $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
-            // grant owner access
-            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-            $aclProvider->updateAcl($acl);
+                // grant owner access
+                $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+                $aclProvider->updateAcl($acl);
+            }
+
+
 
             return $this->redirect($this->generateUrl('url_show', array('id' => $entity->getId())));
         }
@@ -157,9 +167,6 @@ class UrlController extends Controller
     public function editAction($id)
     {
 
-
-
-//        After acl is passed
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('SurlUrlBundle:Url')->find($id);
@@ -168,11 +175,43 @@ class UrlController extends Controller
             throw $this->createNotFoundException('Unable to find Url entity.');
         }
 
-        $authorizationChecker = $this->get('security.authorization_checker');
+        $userrole = $this->get('security.token_storage')->getToken()->getUser();
 
-        // check for edit access
-        if (false === $authorizationChecker->isGranted('EDIT', $entity)) {
-            throw new AccessDeniedException();
+//        check if user is admin - if yes then bypass authorization check
+        if(!in_array("ROLE_ADMIN", $userrole -> getRoles())){
+            $authorizationChecker = $this->get('security.authorization_checker');
+
+            // check for edit access
+            if (false === $authorizationChecker->isGranted('EDIT', $entity)) {
+                throw new AccessDeniedException();
+            }
+        }
+
+        //        After acl is passed
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('SurlUrlBundle:Url:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing Url entity. FOR ROLE_ADMIN
+     *
+     */
+    public function admineditAction($id)
+    {
+
+//        After acl is passed
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('SurlUrlBundle:Url')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Url entity.');
         }
 
         $editForm = $this->createEditForm($entity);
