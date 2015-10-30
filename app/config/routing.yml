@@ -2,9 +2,9 @@ surl_url:
     resource: "@SurlUrlBundle/Resources/config/routing.yml"
     prefix:   /
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
 
 #fos user routing settings
 fos_user_security:
@@ -25,3 +25,15 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /url/list
+        permanent: true
+
+redirect:
+    path:     /{token}
+    defaults: { _controller: "SurlUrlBundle:Url:redirect" }
+

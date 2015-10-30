@@ -1,5 +1,5 @@
 url:
-    path:     /
+    path:     /list
     defaults: { _controller: "SurlUrlBundle:Url:index" }
 
 url_show:
@@ -19,10 +19,6 @@ url_edit:
     path:     /{id}/edit
     defaults: { _controller: "SurlUrlBundle:Url:edit" }
 
-url_editadmin:
-    path:     admin/{id}/edit
-    defaults: { _controller: "SurlUrlBundle:Url:adminedit" }
-
 url_update:
     path:     /{id}/update
     defaults: { _controller: "SurlUrlBundle:Url:update" }
@@ -32,3 +28,7 @@ url_delete:
     path:     /{id}/delete
     defaults: { _controller: "SurlUrlBundle:Url:delete" }
     methods:  [POST, DELETE]
+
+url_redirect:
+    path:     /{token}
+    defaults: { _controller: "SurlUrlBundle:Url:redirect" }

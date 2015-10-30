@@ -77,6 +77,7 @@ class UrlController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            //check logged in user for acl creation
             if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
                 // creating the ACL
                 $aclProvider = $this->get('security.acl.provider');
@@ -199,32 +200,6 @@ class UrlController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Url entity. FOR ROLE_ADMIN
-     *
-     */
-    public function admineditAction($id)
-    {
-
-//        After acl is passed
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('SurlUrlBundle:Url')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Url entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('SurlUrlBundle:Url:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
     * Creates a form to edit a Url entity.
     *
     * @param Url $entity The entity
@@ -311,5 +286,27 @@ class UrlController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Redirect a Url entity.
+     *
+     */
+    public function redirectAction($token)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('SurlUrlBundle:Url')->findOneBy(
+            array('token' => $token)
+        );
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find url.');
+        }
+
+        return $this->render('SurlUrlBundle:Url:redirect.html.twig', array(
+            'entity'      => $entity,
+
+        ));
     }
 }

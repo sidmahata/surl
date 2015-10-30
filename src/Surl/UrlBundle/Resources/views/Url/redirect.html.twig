@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block meta %}
+    <meta http-equiv="refresh" content="5;url={{ entity.url }}" />
+{% endblock %}
+
+{% block body -%}
+    You will be redirected in 5 sec to : {{ entity.url }}
+
+
+    <h1>your content</h1>
+
+{% endblock %}
