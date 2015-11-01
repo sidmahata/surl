@@ -1,6 +1,6 @@
 <?php
 
-namespace Surl\UrlBundle\Controller;
+namespace Acme\TestBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        return $this->render('SurlUrlBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('AcmeTestBundle:Default:index.html.twig', array('name' => $name));
     }
 }

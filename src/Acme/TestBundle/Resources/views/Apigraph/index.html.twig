@@ -1,0 +1,172 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+
+
+{#<script>#}
+    {#AmCharts.makeChart("chartdiv", {#}
+        {#type: "serial",#}
+        {#theme: "dark",#}
+        {#dataProvider: {{ apifetched |raw }},#}
+        {#categoryField: "date",#}
+        {#startDuration: 1,#}
+        {#rotate: true,#}
+
+        {#categoryAxis: {#}
+            {#gridPosition: "start"#}
+        {#},#}
+        {#valueAxes: [{#}
+            {#position: "bottom",#}
+            {#title: "No. of Hits",#}
+            {#minorGridEnabled: true#}
+        {#}],#}
+        {#graphs: [{#}
+            {#type: "column",#}
+            {#title: "Hits",#}
+            {#valueField: "nb_hits",#}
+            {#fillAlphas:1,#}
+            {#balloonText: "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>"#}
+        {#}, {#}
+            {#type: "column",#}
+            {#title: "Visits",#}
+            {#valueField: "nb_visits",#}
+            {#fillAlphas:.5,#}
+            {#balloonText: "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>"#}
+        {#}],#}
+        {#legend: {#}
+            {#useGraphSettings: true#}
+        {#},#}
+
+        {#creditsPosition:"bottom-right"#}
+
+    {#});#}
+
+
+{#</script>#}
+
+    <script type="text/javascript">
+        AmCharts.makeChart("chartdiv",
+                {
+                    "type": "serial",
+                    "categoryField": "date",
+                    "startDuration": 1,
+                    "theme": "dark",
+                    "categoryAxis": {
+                        "gridPosition": "start"
+                    },
+                    "trendLines": [],
+                    "graphs": [
+                        {
+                            "balloonText": "[[title]] on [[category]]:[[value]]",
+                            "fillAlphas": 1,
+                            "id": "nb_hits",
+                            "title": "Hits",
+                            "type": "column",
+                            "valueField": "nb_hits",
+                            "lineColor": "#DB9393"
+                        },
+                        {
+                            "balloonText": "[[title]] on [[category]]:[[value]]",
+                            "fillAlphas": 1,
+                            "id": "nb_visits",
+                            "title": "Visits",
+                            "type": "column",
+                            "valueField": "nb_visits",
+                            "lineColor": "#2f779e"
+                        }
+                    ],
+                    "guides": [],
+                    "valueAxes": [
+                        {
+                            "id": "ValueAxis-1",
+                            "stackType": "regular",
+                            "title": "Visits stacked on Hits"
+                        }
+                    ],
+                    "allLabels": [],
+                    "balloon": {},
+                    "legend": {
+                        "useGraphSettings": true
+                    },
+                    "titles": [
+                        {
+                            "id": "Title-1",
+                            "size": 15,
+                            "text": "Hits and Visits"
+                        }
+                    ],
+                    "dataProvider": {{ apifetched |raw }}
+                }
+        );
+    </script>
+
+    {#<script>#}
+        {#var chart;#}
+        {#var chartData = {{ apifetched |raw }};#}
+
+
+        {#AmCharts.ready(function () {#}
+            {#// SERIAL CHART#}
+            {#chart = new AmCharts.AmSerialChart();#}
+
+            {#chart.dataProvider = chartData;#}
+            {#chart.categoryField = "date";#}
+            {#chart.startDuration = 1;#}
+
+            {#// AXES#}
+            {#// category#}
+            {#var categoryAxis = chart.categoryAxis;#}
+            {#categoryAxis.gridPosition = "start";#}
+
+            {#// value#}
+            {#var valueAxis = new AmCharts.ValueAxis();#}
+            {#valueAxis.axisAlpha = 0;#}
+            {#chart.addValueAxis(valueAxis);#}
+
+            {#// GRAPHS#}
+            {#// column graph#}
+            {#var graph1 = new AmCharts.AmGraph();#}
+            {#graph1.type = "column";#}
+            {#graph1.title = "Hits";#}
+            {#graph1.lineColor = "#a668d5";#}
+            {#graph1.valueField = "nb_hits";#}
+            {#graph1.lineAlpha = 1;#}
+            {#graph1.fillAlphas = 1;#}
+            {#graph1.dashLengthField = "dashLengthColumn";#}
+            {#graph1.alphaField = "alpha";#}
+            {#graph1.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b> [[additional]]</span>";#}
+            {#chart.addGraph(graph1);#}
+
+            {#// line#}
+            {#var graph2 = new AmCharts.AmGraph();#}
+            {#graph2.type = "column";#}
+            {#graph2.title = "Visits";#}
+            {#graph2.lineColor = "#599BAD";#}
+            {#graph2.valueField = "nb_visits";#}
+            {#graph2.lineAlpha = 1;#}
+            {#graph1.lineAlpha = 1;#}
+            {#graph1.fillAlphas = 1;#}
+            {#graph1.dashLengthField = "dashLengthColumn";#}
+            {#graph1.alphaField = "alpha";#}
+            {#graph2.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b> [[additional]]</span>";#}
+            {#chart.addGraph(graph2);#}
+
+            {#// LEGEND#}
+            {#var legend = new AmCharts.AmLegend();#}
+            {#legend.useGraphSettings = true;#}
+            {#chart.addLegend(legend);#}
+
+            {#// WRITE#}
+            {#chart.write("chartdiv");#}
+        {#});#}
+    {#</script>#}
+
+{% endblock %}
+
+{% block body %}
+<body>
+    <h1>apigraph</h1>
+
+    <div id="chartdiv" style="height: 400px; background-color: #0f263b;"></div>
+</body>
+{% endblock %}

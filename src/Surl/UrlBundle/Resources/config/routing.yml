@@ -2,6 +2,3 @@ surl_url_url:
     resource: "@SurlUrlBundle/Resources/config/routing/url.yml"
     prefix:   /url
 
-surl_url_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: SurlUrlBundle:Default:index }
