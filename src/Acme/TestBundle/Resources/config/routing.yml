@@ -5,3 +5,7 @@ acme_test_homepage:
 acme_test_apigraph:
     path:     /apigraph
     defaults: { _controller: AcmeTestBundle:Apigraph:index }
+
+acme_test_apigraph_referrer:
+    path:     /apigraph/referrer
+    defaults: { _controller: AcmeTestBundle:Apigraph:referrer }

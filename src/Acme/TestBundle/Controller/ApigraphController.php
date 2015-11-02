@@ -15,7 +15,7 @@ class ApigraphController extends Controller
         $token_auth = '90871c8584ddf2265f54553a305b6ae1';
 
 // we call the REST API and request the 100 first keywords for the last month for the idsite=7
-        $url = "https://localhost/piwik/";
+        $url = "http://localhost/piwik/";
         $url .= "?module=API&method=Actions.getPageUrl";
         $url .= "&pageUrl=http://localhost/surl/web/template1";
         $url .= "&period=day&date=last30&idSite=1";
@@ -58,6 +58,42 @@ class ApigraphController extends Controller
             'apifetched' => $jsonfetched
         ));
 //        return new response($fetched);
+
+    }
+
+    public function referrerAction()
+    {
+
+        // this token is used to authenticate your API request.
+// You can get the token on the API page inside your Piwik interface
+        $token_auth = '90871c8584ddf2265f54553a305b6ae1';
+
+// we call the REST API and request the 100 first keywords for the last month for the idsite=7
+        $url = "http://localhost/piwik/";
+        $url .= "?module=API&method=Referrers.getWebsites";
+        $url .= "&segment=entryPageUrl==http://localhost/surl/web/template1";
+        $url .= "&period=range&date=last3&idSite=1";
+        $url .= "&format=xml";
+        $url .= "&token_auth=$token_auth";
+
+        $data = file_get_contents($url);
+        $fetched = simplexml_load_string($data);
+
+        $nb_hits_array_final = array();
+
+        foreach($fetched->row as $datedata) {
+
+            $nb_hits_array_row = ["label" => (string)$datedata->label, "nb_visits" => (int)$datedata->nb_visits];
+            array_push($nb_hits_array_final, $nb_hits_array_row);
+        }
+
+        $jsonfetched = json_encode($nb_hits_array_final);
+
+        var_dump($jsonfetched);
+
+        return $this->render('AcmeTestBundle:Apigraph:referrer.html.twig', array(
+            'apifetched' => $jsonfetched
+        ));
 
     }
 }
