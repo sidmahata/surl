@@ -20,6 +20,11 @@ class AppKernel extends Kernel
             new Surl\UrlBundle\SurlUrlBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Acme\TestBundle\AcmeTestBundle(),
+            new Voryx\RESTGeneratorBundle\VoryxRESTGeneratorBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle($this),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Surl\FrontendBundle\SurlFrontendBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

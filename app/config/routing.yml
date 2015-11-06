@@ -1,3 +1,12 @@
+surl_frontend:
+    resource: "@SurlFrontendBundle/Resources/config/routing.yml"
+    prefix:   /frontend
+
+surl_url_url_api:
+    resource: "@SurlUrlBundle/Controller/UrlRESTController.php"
+    type:   rest
+    prefix:   /api
+
 acme_test:
     resource: "@AcmeTestBundle/Resources/config/routing.yml"
     prefix:   /acme

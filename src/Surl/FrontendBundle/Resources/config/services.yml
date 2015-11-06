@@ -1,0 +1,4 @@
+services:
+#    surl_frontend.example:
+#        class: Surl\FrontendBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

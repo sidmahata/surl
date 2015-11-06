@@ -1,0 +1,7 @@
+#surl_frontend_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: SurlFrontendBundle:Default:index }
+
+surl_frontend_homepage:
+    path:     /
+    defaults: { _controller: SurlFrontendBundle:Shorturl:index }

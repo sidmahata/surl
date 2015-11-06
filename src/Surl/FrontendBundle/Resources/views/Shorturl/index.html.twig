@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    <div ng-app="shorturlApp" ng-controller="shorturlCtrl">
+
+
+
+        {% verbatim %}
+
+        <nav class="navbar navbar-default" style="font-size: 14px;">
+            <div class="container-fluid" style="padding: 10px; border-bottom: 1px solid rgb(78, 104, 108);">
+
+                <div class="col-sm-3">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Brand</a>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <form style="text-align: center;" ng-submit="createshorturl()">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Paste Link here..." ng-model="urlentry.url">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">Go!</button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">Link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="well text-center" id="shorturl_create_box" style="display: none;">
+                <a style="color: #F0AD4E;" href="{{ 'ab.cd/'+shorturl_list.token  }}">{{ 'ab.cd/'+shorturl_list.token  }}</a>
+            </div>
+        </nav>
+
+
+        {% endverbatim %}
+
+        {#Custom Short: <input type="text" ng-model="urlentry.token"><br>#}
+        {#Long Url: <input type="text" ng-model="urlentry.url"><br>#}
+        {#<button ng-click="createshorturl()">Create</button>#}
+    </div>
+
+    <script>
+        var app = angular.module('shorturlApp', []);
+        app.controller('shorturlCtrl', function($scope, $http) {
+
+//            $scope.tokenname = "";
+            $scope.urlname = "";
+
+            $scope.urlentry = {};
+
+            $scope.createshorturl = function() {
+
+                $http.post("http://localhost/surl/web/api/urls", $scope.urlentry)
+                        .success(function(response) {
+                            $scope.shorturl_list = response;
+                                $("#shorturl_create_box").show(200);
+                        });
+            };
+
+        });
+    </script>
+{% endblock %}
