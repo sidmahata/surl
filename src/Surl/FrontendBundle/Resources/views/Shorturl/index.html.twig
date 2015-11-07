@@ -8,7 +8,7 @@
 
         {% verbatim %}
 
-        <nav class="navbar navbar-default" style="font-size: 14px;">
+        <nav class="navbar navbar-default" style="font-size: 16px;">
             <div class="container-fluid" style="padding: 10px; border-bottom: 1px solid rgb(78, 104, 108);">
 
                 <div class="col-sm-3">
@@ -32,6 +32,7 @@
                                 </span>
                         </div>
                     </form>
+
                 </div>
 
                 <div class="col-sm-3">
@@ -43,7 +44,14 @@
                 </div>
             </div>
             <div class="well text-center" id="shorturl_create_box" style="display: none;">
-                <a style="color: #F0AD4E;" href="{{ 'ab.cd/'+shorturl_list.token  }}">{{ 'ab.cd/'+shorturl_list.token  }}</a>
+                <span id="shorturl-loader" style="display: none;"><img src="{% endverbatim %}{{ asset('images/loaders/ring-loader.svg') }}{% verbatim %}" alt="Processing..."/></span>
+
+                <span id="shorturl-link-created" style="color: #f0bf83; display: none;">
+                    <a  href="{{ 'ab.cd/'+shorturl_list.token  }}">{{ 'ab.cd/'+shorturl_list.token  }}</a>
+                    <p>{{ shorturl_list.url }}</p>
+                </span>
+
+
             </div>
         </nav>
 
@@ -66,10 +74,21 @@
 
             $scope.createshorturl = function() {
 
+
+//                show #shorturl_create_box
+                $("#shorturl_create_box").show(200);
+                //                show shorturl-loader loader
+                $("#shorturl-loader").delay(250).show(100);
+
+
                 $http.post("http://localhost/surl/web/api/urls", $scope.urlentry)
                         .success(function(response) {
                             $scope.shorturl_list = response;
-                                $("#shorturl_create_box").show(200);
+
+//                            hide shorturl-loader loader on response creation
+                            $("#shorturl-loader").hide();
+//                            show #shorturl-link-created
+                            $("#shorturl-link-created").show(250);
                         });
             };
 
